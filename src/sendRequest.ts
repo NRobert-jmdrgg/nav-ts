@@ -3,7 +3,7 @@ import axios from 'axios';
 import xml2js from 'xml2js';
 import dotenv from 'dotenv';
 import { InvoiceRequest } from './baseTypes';
-import { TokenExchangeResponse } from './operations/types/response';
+
 dotenv.config();
 
 /**
@@ -12,10 +12,10 @@ dotenv.config();
  * @param {string} operation operáció
  * @returns {Object | null} response object
  */
-export default async function sendRequest(
+export default async function sendRequest<R>(
   request: InvoiceRequest,
   operation: string
-): Promise<TokenExchangeResponse | null> {
+): Promise<R | null> {
   const xml = writeToXML(request);
   const xmlparser = new xml2js.Parser();
   let parsedResponse = null;
@@ -29,8 +29,8 @@ export default async function sendRequest(
 
     const xmlNoNamespaceResponse = response.data.replace(/ns2:|ns3:/g, '');
     parsedResponse = await xmlparser.parseStringPromise(xmlNoNamespaceResponse);
-  } catch (e) {
-    console.log(e);
+  } catch (e: any) {
+    console.log(e.response.data);
   }
 
   return parsedResponse;

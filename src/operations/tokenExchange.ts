@@ -4,6 +4,7 @@ import createRequestSignature from '../utils/createRequestSignature';
 import crypto from 'crypto';
 import User from '../user';
 import Software from '../software';
+import { TokenExchangeResponse } from './types/response.js';
 
 export default async function getExchangeToken(
   user: User,
@@ -17,7 +18,11 @@ export default async function getExchangeToken(
       user.signatureKey
     );
 
-  const response = await sendRequest(request, 'tokenExchange');
+  const response = await sendRequest<TokenExchangeResponse>(
+    request,
+    'tokenExchange'
+  );
+
   const encryptedToken =
     response?.TokenExchangeResponse.encodedExchangeToken[0];
 

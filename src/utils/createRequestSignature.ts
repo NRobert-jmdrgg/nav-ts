@@ -10,23 +10,29 @@ import maskIsoDate from './maskIsoDate';
  * @return sha3-512 kódolt request signature
  */
 
+type Operation = {
+  operationType: string;
+  base64data: string;
+};
+
 export default function createRequestSignature(
   requestId: string,
   timestamp: string,
-  signatureKey: string
-  // operations?:
+  signatureKey: string,
+  operations?: Operation[]
 ): string {
   let partialSignature = requestId + maskIsoDate(timestamp) + signatureKey;
 
-  // if (operations) {
-  //   operations.forEach((operation) => {
-  //     const hash = crypto.createHash('sha3-512');
-  //     partialSignature += hash
-  //       .update(operation.operationType + operation.base64data)
-  //       .digest('hex')
-  //       .toUpperCase();
-  //   });
-  // }
+  if (operations) {
+    operations.forEach((operation) => {
+      const hash = crypto.createHash('sha3-512');
+      partialSignature += hash
+        .update(operation.operationType + operation.base64data)
+        .digest('hex')
+        .toUpperCase();
+    });
+  }
+
   const hash = crypto.createHash('sha3-512');
   const requestSignature = hash
     .update(partialSignature)

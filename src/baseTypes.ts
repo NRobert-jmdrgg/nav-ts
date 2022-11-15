@@ -1,20 +1,20 @@
 import Software from './software';
 
-export interface BasicHeader {
+export type BasicHeader = {
   requestId: string;
   timestamp: string;
   requestVersion: string;
   headerVersion?: string;
-}
+};
 
-export interface CommonBasicHeader {
+export type CommonBasicHeader = {
   'common:requestId': string;
   'common:timestamp': string;
   'common:requestVersion': string;
   'common:headerVersion'?: string;
-}
+};
 
-export interface UserHeader {
+export type UserHeader = {
   'common:login': string;
   'common:passwordHash': {
     $: {
@@ -29,9 +29,9 @@ export interface UserHeader {
     };
     _: string;
   };
-}
+};
 
-export interface InvoiceRequest {
+export type InvoiceRequest = {
   [x: string]: {
     $: {
       'xmlns:common': string;
@@ -41,9 +41,9 @@ export interface InvoiceRequest {
     'common:user': UserHeader;
     software: Software;
   };
-}
+};
 
-export interface BasicResult {
+export type BasicResult = {
   funcCode: string;
   errorCode?: string;
   message?: string;
@@ -55,10 +55,4 @@ export interface BasicResult {
       }
     ];
   };
-}
-
-// export interface BasicOnlineInvoiceResponse {
-//   header: BasicHeader;
-//   result: BasicResult;
-//   software: Software;
-// }
+};
