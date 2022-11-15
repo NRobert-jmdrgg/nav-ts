@@ -1,5 +1,4 @@
-import { BasicHeader, BasicResult } from '../../baseTypes';
-import Software from '../../software';
+import { Software, BasicHeader, BasicResult } from '../../baseTypes';
 
 export type TokenExchangeResponse = {
   TokenExchangeResponse: {

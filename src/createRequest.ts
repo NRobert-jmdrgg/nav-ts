@@ -1,7 +1,7 @@
 import makeid from './utils/makeid';
 import crypto from 'crypto';
-import User from './user';
-import Software from './software';
+import { pick } from 'lodash';
+import { User, Software } from './baseTypes';
 
 /**
  * Alap request object
@@ -47,7 +47,17 @@ export default function createRequest(
           _: '',
         },
       },
-      software: software,
+      // az object sorrendnek megfelelőnek kell lennie, különben nem fog menni.
+      software: pick(software, [
+        'softwareId',
+        'softwareName',
+        'softwareOperation',
+        'softwareMainVersion',
+        'softwareDevName',
+        'softwareDevContact',
+        'softwareDevCountryCode',
+        'softwareDevTaxNumber',
+      ]),
       ...options,
     },
   };

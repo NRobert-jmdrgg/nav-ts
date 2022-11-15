@@ -2,8 +2,7 @@ import createRequest from '../createRequest.js';
 import sendRequest from '../sendRequest.js';
 import createRequestSignature from '../utils/createRequestSignature';
 import crypto from 'crypto';
-import User from '../user';
-import Software from '../software';
+import { User, Software } from '../baseTypes';
 import { TokenExchangeResponse } from './types/response.js';
 
 export default async function getExchangeToken(

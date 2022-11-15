@@ -1,4 +1,21 @@
-import Software from './software';
+export type User = {
+  login: string;
+  password: string;
+  taxNumber: string;
+  exchangeKey: string;
+  signatureKey: string;
+};
+
+export type Software = {
+  softwareId: string;
+  softwareName: string;
+  softwareOperation: string;
+  softwareMainVersion: string;
+  softwareDevName: string;
+  softwareDevContact: string;
+  softwareDevCountryCode?: string;
+  softwareDevTaxNumber?: string;
+};
 
 export type BasicHeader = {
   requestId: string;
