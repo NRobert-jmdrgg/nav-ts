@@ -4,12 +4,20 @@ import { QueryInvoiceCheckOptions } from './types/options';
 import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryInvoiceCheckResponse } from './types/response';
+import { pick } from 'lodash';
 
 export default async function queryInvoiceCheck(
   user: User,
   software: Software,
   options: QueryInvoiceCheckOptions
 ) {
+  options.invoiceNumberQuery = pick(options.invoiceNumberQuery, [
+    'invoiceNumber',
+    'invoiceDirection',
+    'batchIndex',
+    'supplierTaxNumber',
+  ]);
+
   const request = createRequest(
     'QueryInvoiceCheckRequest',
     user,

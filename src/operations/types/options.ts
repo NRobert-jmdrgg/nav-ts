@@ -1,13 +1,11 @@
 export type ManageAnnulmentOptions = {
   exchangeToken: string;
   annulmentOperations: {
-    annumentOperation: [
-      {
-        index: number;
-        annulmentOperation: 'ANNUL';
-        invoiceAnnulment: string;
-      }
-    ];
+    annumentOperation: {
+      index: number;
+      annulmentOperation: 'ANNUL';
+      invoiceAnnulment: string;
+    }[];
   };
 };
 
@@ -17,14 +15,12 @@ export type ManageInvoiceOptions = {
   exchangeToken: string;
   invoiceOperations: {
     compressedContent: boolean;
-    invoiceOperation: [
-      {
-        index: number;
-        invoiceOperation: InvoiceOperation;
-        invoiceData: string;
-        electronicInvoiceHash?: string;
-      }
-    ];
+    invoiceOperation: {
+      index: number;
+      invoiceOperation: InvoiceOperation;
+      invoiceData: string;
+      electronicInvoiceHash?: string;
+    }[];
   };
 };
 
@@ -54,9 +50,9 @@ export type QueryInvoiceDataOptions = {
   invoiceNumberQuery: InvoiceNumberQuery;
 };
 
-type RelationQueryMonetary = {
+export type RelationQueryMonetary = {
   queryOperator: 'EQ' | 'GT' | 'GTE' | 'LT' | 'LTE';
-  queryValue: Date;
+  queryValue: string;
 };
 
 type DateTimeIntervalParamType = {
@@ -70,8 +66,8 @@ export type QueryInvoiceDigestOptions = {
   invoiceQueryParams: {
     mandatoryQueryParams: {
       invoiceIssueDate?: {
-        dateFrom: Date;
-        dateTo: Date;
+        dateFrom: string;
+        dateTo: string;
       };
       insDate?: DateTimeIntervalParamType;
       originalInvoiceNumber?: string;

@@ -15,6 +15,12 @@ export default async function manageAnnulment(
   software: Software,
   options: ManageAnnulmentOptions
 ): Promise<string | undefined> {
+  // sorrend
+  options.annulmentOperations.annumentOperation =
+    options.annulmentOperations.annumentOperation.map((ao) =>
+      pick(ao, ['index', 'annulmentOperation', 'invoiceAnnulment'])
+    );
+
   const request = createRequest(
     'ManageAnnulmentRequest',
     user,

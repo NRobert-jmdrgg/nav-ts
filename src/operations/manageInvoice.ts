@@ -12,6 +12,22 @@ export default async function manageInvoice(
   software: Software,
   options: ManageInvoiceOptions
 ): Promise<string | undefined> {
+  // reorder obj properties
+  options.invoiceOperations.invoiceOperation =
+    options.invoiceOperations.invoiceOperation.map((io) =>
+      pick(io, [
+        'index',
+        'invoiceOperation',
+        'invoiceData',
+        'electronicInvoiceHash',
+      ])
+    );
+
+  options.invoiceOperations = pick(options.invoiceOperations, [
+    'compressedContent',
+    'invoiceOperation',
+  ]);
+
   const request = createRequest(
     'ManageInvoiceRequest',
     user,

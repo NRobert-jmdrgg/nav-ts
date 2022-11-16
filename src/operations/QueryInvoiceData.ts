@@ -11,6 +11,13 @@ export default async function queryInvoiceData(
   software: Software,
   options: QueryInvoiceDataOptions
 ) {
+  options.invoiceNumberQuery = pick(options.invoiceNumberQuery, [
+    'invoiceNumber',
+    'invoiceDirection',
+    'batchIndex',
+    'supplierTaxNumber',
+  ]);
+
   const request = createRequest(
     'QueryInvoiceDataRequest',
     user,
@@ -29,13 +36,12 @@ export default async function queryInvoiceData(
     'queryInvoiceData'
   );
 
-  response?.QueryInvoiceDataResponse?.invoiceDataReesult;
+  response?.QueryInvoiceDataResponse?.invoiceDataResult;
 
   return response
     ? {
         result: response.QueryInvoiceDataResponse.result,
-        invoiceDataReesult:
-          response.QueryInvoiceDataResponse.invoiceDataReesult,
+        invoiceDataResult: response.QueryInvoiceDataResponse.invoiceDataResult,
       }
     : null;
 }

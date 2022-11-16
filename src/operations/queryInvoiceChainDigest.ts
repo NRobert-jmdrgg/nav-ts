@@ -11,6 +11,12 @@ export default async function queryInvoiceChainDigest(
   software: Software,
   options: QueryInvoiceChainDigestOptions
 ) {
+  options.invoiceChainQuery = pick(options.invoiceChainQuery, [
+    'invoiceNumber',
+    'invoiceDirection',
+    'taxNumber',
+  ]);
+
   const request = createRequest(
     'QueryInvoiceChainDigestRequest',
     user,

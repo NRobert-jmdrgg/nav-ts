@@ -11,12 +11,15 @@ export default async function queryTransactionList(
   software: Software,
   options: QueryTransactionListOptions
 ) {
+  options.insDate = pick(options.insDate, ['dateTimeFrom', 'dateTimeTo']);
+
   const request = createRequest(
     'QueryTransactionListRequest',
     user,
     software,
     pick(options, ['page', 'insDate', 'requestStatus'])
   );
+
   request['QueryTransactionListRequest']['common:user'][
     'common:requestSignature'
   ]._ = createRequestSignature(
