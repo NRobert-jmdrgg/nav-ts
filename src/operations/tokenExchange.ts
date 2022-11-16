@@ -1,6 +1,6 @@
 import createRequest from '../createRequest.js';
 import sendRequest from '../sendRequest.js';
-import createRequestSignature from '../utils/createRequestSignature';
+import { createRequestSignature } from '../utils/createRequestSignature';
 import crypto from 'crypto';
 import { User, Software } from '../baseTypes';
 import { TokenExchangeResponse } from './types/response.js';

@@ -11,7 +11,7 @@ export type TokenExchangeResponse = {
   };
 };
 
-export type BasicAnnulmentResponse = {
+export type ManageAnnulmentResponse = {
   BasicAnnulmentResponse: {
     header: BasicHeader;
     result: BasicResult;

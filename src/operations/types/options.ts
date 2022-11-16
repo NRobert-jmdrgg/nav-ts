@@ -46,7 +46,7 @@ type InvoiceNumberQuery = {
   supplierTaxNumber?: string;
 };
 
-export type queryInvoiceCheckOptions = {
+export type QueryInvoiceCheckOptions = {
   invoiceNumberQuery: InvoiceNumberQuery;
 };
 

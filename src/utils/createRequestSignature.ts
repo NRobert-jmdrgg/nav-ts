@@ -10,12 +10,12 @@ import maskIsoDate from './maskIsoDate';
  * @return sha3-512 kódolt request signature
  */
 
-type Operation = {
+export type Operation = {
   operationType: string;
   base64data: string;
 };
 
-export default function createRequestSignature(
+export function createRequestSignature(
   requestId: string,
   timestamp: string,
   signatureKey: string,
