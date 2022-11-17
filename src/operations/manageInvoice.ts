@@ -7,12 +7,20 @@ import sendRequest from '../sendRequest';
 import { ManageInvoiceResponse } from './types/response';
 import { pick } from 'lodash';
 
+/**
+ * A számlaadat-szolgáltatás beküldésére szolgáló operáció, ezen keresztül van
+lehetőség számla, módosító vagy stornó számlaadat-szolgáltatást a NAV-nak beküldeni.
+ * @param user technikai felhasználó adatok
+ * @param software software adatok
+ * @param options konfigurációs object
+ * @returns transactionId és result érték
+ */
 export default async function manageInvoice(
   user: User,
   software: Software,
   options: ManageInvoiceOptions
-): Promise<string | undefined> {
-  // reorder obj properties
+) {
+  // sorrend
   options.invoiceOperations.invoiceOperation =
     options.invoiceOperations.invoiceOperation.map((io) =>
       pick(io, [
@@ -28,12 +36,15 @@ export default async function manageInvoice(
     'invoiceOperation',
   ]);
 
+  // request létrehozása
   const request = createRequest(
     'ManageInvoiceRequest',
     user,
     software,
     pick(options, ['exchangeToken', 'invoiceOperations'])
   );
+
+  // request signature létrehozása
   request['ManageInvoiceRequest']['common:user']['common:requestSignature']._ =
     createRequestSignature(
       request['ManageInvoiceRequest']['common:header']['common:requestId'],
@@ -47,9 +58,16 @@ export default async function manageInvoice(
           }
       )
     );
+
   const response = await sendRequest<ManageInvoiceResponse>(
     request,
     'manageInvoice'
   );
-  return response?.ManageInvoiceResponse.transactionId;
+
+  return response
+    ? {
+        result: response.ManageInvoiceResponse.result,
+        transactionId: response.ManageInvoiceResponse.transactionId,
+      }
+    : null;
 }

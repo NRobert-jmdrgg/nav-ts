@@ -1,9 +1,7 @@
 import xml2js from 'xml2js';
 import fs from 'fs';
 
-export default function writeToXML(obj: any): string | null {
-  if (!obj) return null;
-
+export default function writeToXML(obj: any): string {
   const xmlBuilder = new xml2js.Builder({
     cdata: true,
   });

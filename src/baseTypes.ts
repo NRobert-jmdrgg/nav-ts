@@ -1,3 +1,7 @@
+/**
+ * alap típusok a nav operációkhoz
+ */
+
 export type User = {
   login: string;
   password: string;
@@ -65,11 +69,9 @@ export type BasicResult = {
   errorCode?: string;
   message?: string;
   notifications: {
-    notification: [
-      {
-        notificationCode: string;
-        notificationText: string;
-      }
-    ];
+    notification: {
+      notificationCode: string;
+      notificationText: string;
+    }[];
   };
 };

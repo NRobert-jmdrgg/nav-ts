@@ -1,3 +1,8 @@
+/**
+ * Random id generálása az xml fejléchez
+ * @param length id hossza
+ * @returns id
+ */
 export default function makeid(length: number): string {
   let result = '';
   const characters =

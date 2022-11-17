@@ -6,13 +6,23 @@ import sendRequest from '../sendRequest';
 import { QueryTransactionListResponse } from './types/response';
 import { pick } from 'lodash';
 
+/**
+ * a kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó
+adószámhoz beküldött számlaadat-szolgáltatások listázására szolgál.
+ * @param user technikai felhasználó adatok
+ * @param software software adatok
+ * @param options konfigurációs object
+ * @returns számlaadat lista és result érték
+ */
 export default async function queryTransactionList(
   user: User,
   software: Software,
   options: QueryTransactionListOptions
 ) {
+  // sorrend
   options.insDate = pick(options.insDate, ['dateTimeFrom', 'dateTimeTo']);
 
+  // request létrehozása
   const request = createRequest(
     'QueryTransactionListRequest',
     user,
@@ -20,6 +30,7 @@ export default async function queryTransactionList(
     pick(options, ['page', 'insDate', 'requestStatus'])
   );
 
+  // request signature létrehozása
   request['QueryTransactionListRequest']['common:user'][
     'common:requestSignature'
   ]._ = createRequestSignature(
@@ -27,6 +38,7 @@ export default async function queryTransactionList(
     request['QueryTransactionListRequest']['common:header']['common:timestamp'],
     user.signatureKey
   );
+
   const response = await sendRequest<QueryTransactionListResponse>(
     request,
     'queryTransactionList'

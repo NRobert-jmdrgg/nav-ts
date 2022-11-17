@@ -3,10 +3,10 @@ import maskIsoDate from './maskIsoDate';
 
 /**
  * request signature létrehozása
- * @param {string} requestId kérés idje
- * @param {Date} timestamp kérés ideje
- * @param {string} signatureKey technikai felhasználó aláírókulcsa
- * @param {Array} operations a manageAnnulment vagy manageInvoice operációlistája
+ * @param requestId kérés idje
+ * @param timestamp kérés ideje
+ * @param signatureKey technikai felhasználó aláírókulcsa
+ * @param operations a manageAnnulment vagy manageInvoice operációlistája
  * @return sha3-512 kódolt request signature
  */
 

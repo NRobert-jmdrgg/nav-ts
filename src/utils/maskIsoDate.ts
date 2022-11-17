@@ -1,7 +1,7 @@
 /**
- * ISO dátum átkonvertálása YYYY-mm-ddThh:mm:ss formátumra.
- * @param {Date} timestamp dátum
- * @returns {string} YYYYmmddhhmmss formátumú dátum
+ * ISO dátum átkonvertálása YYYYmmddhhmmss formátumra.
+ * @param timestamp ISO dátum
+ * @returns YYYYmmddhhmmss formátumú dátum
  */
 export default function maskIsoDate(timestamp: string): string {
   return timestamp.substring(0, 19).replace(/-|:|T/g, '');

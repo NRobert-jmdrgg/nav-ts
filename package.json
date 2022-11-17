@@ -2,7 +2,8 @@
   "main": "test.ts",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node ./dist/test.js"
+    "build:start": "npm run build && node ./dist/test.js",
+    "start": "node ./dist/test.js"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.189",

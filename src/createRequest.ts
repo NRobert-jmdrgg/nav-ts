@@ -4,10 +4,12 @@ import { pick } from 'lodash';
 import { User, Software } from './baseTypes';
 
 /**
- * Alap request object
- * @param {User} user user adatokat tartalmazó object
- * @param {Software} software software adatokat tartalmazó object
- * @returns BasicOnlineInvoiceRequest object
+ * Request object
+ * @param requestName a request neve (Az xml root)
+ * @param user user adatokat tartalmazó object
+ * @param software software adatokat tartalmazó object
+ * @param options? A BasicOnlineInvoiceRequest kiegészítése
+ * @returns InvoiceRequest object
  */
 export default function createRequest(
   requestName: string,

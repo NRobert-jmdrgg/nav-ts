@@ -1,3 +1,7 @@
+/**
+ * Operáció opció típusok
+ */
+
 export type ManageAnnulmentOptions = {
   exchangeToken: string;
   annulmentOperations: {

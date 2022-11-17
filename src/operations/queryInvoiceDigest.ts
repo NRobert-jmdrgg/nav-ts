@@ -9,11 +9,20 @@ import sendRequest from '../sendRequest';
 import { QueryInvoiceDigestResponse } from './types/response';
 import { pick } from 'lodash';
 
+/**
+ * Üzleti keresőparaméterek alapján működő lekérdező operáció. Az operáció a megadott keresőfeltételeknek
+megfelelő, lapozható számla listát ad vissza a válaszban. 
+ * @param user technikai felhasználó adatok
+ * @param software software adatok
+ * @param options konfigurációs object
+ * @returns számla lista és result érték
+ */
 export default async function queryInvoiceDigest(
   user: User,
   software: Software,
   options: QueryInvoiceDigestOptions
 ) {
+  // sorrend
   if (options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate) {
     options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate = pick(
       options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate,
@@ -84,12 +93,15 @@ export default async function queryInvoiceDigest(
     'transactionQueryParams',
   ]);
 
+  // reqest létrehozása
   const request = createRequest(
     'QueryInvoiceDigestRequest',
     user,
     software,
     pick(options, ['page', 'invoiceDirection', 'invoiceQueryParams'])
   );
+
+  // request signature létrehozása
   request['QueryInvoiceDigestRequest']['common:user'][
     'common:requestSignature'
   ]._ = createRequestSignature(
@@ -97,6 +109,7 @@ export default async function queryInvoiceDigest(
     request['QueryInvoiceDigestRequest']['common:header']['common:timestamp'],
     user.signatureKey
   );
+
   const response = await sendRequest<QueryInvoiceDigestResponse>(
     request,
     'queryInvoiceDigest'

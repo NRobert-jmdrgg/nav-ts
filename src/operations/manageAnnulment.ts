@@ -10,23 +10,33 @@ import sendRequest from '../sendRequest';
 import { ManageAnnulmentResponse } from './types/response';
 import { pick } from 'lodash';
 
+/**
+ * Operáció a technikai érvénytelenítések beküldésére szolgáló operáció
+ * @param user technikai felhasználó adatok
+ * @param software software adatok
+ * @param options konfigurációs object
+ * @returns transactionId és result érték
+ */
 export default async function manageAnnulment(
   user: User,
   software: Software,
   options: ManageAnnulmentOptions
-): Promise<string | undefined> {
+) {
   // sorrend
   options.annulmentOperations.annumentOperation =
     options.annulmentOperations.annumentOperation.map((ao) =>
       pick(ao, ['index', 'annulmentOperation', 'invoiceAnnulment'])
     );
 
+  // request létrehozása
   const request = createRequest(
     'ManageAnnulmentRequest',
     user,
     software,
     pick(options, ['exchangeToken', 'annulmentOperations'])
   );
+
+  // request signature generálás
   request['ManageAnnulmentRequest']['common:user'][
     'common:requestSignature'
   ]._ = createRequestSignature(
@@ -47,5 +57,10 @@ export default async function manageAnnulment(
     'manageAnnulment'
   );
 
-  return response?.BasicAnnulmentResponse.transactionId;
+  return response
+    ? {
+        result: response.BasicAnnulmentResponse.result,
+        transactionId: response.BasicAnnulmentResponse.transactionId,
+      }
+    : null;
 }

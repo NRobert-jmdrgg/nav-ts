@@ -1,5 +1,9 @@
 import { Software, BasicHeader, BasicResult } from '../../baseTypes';
 
+/**
+ * Nav válasz xml struktúrák
+ */
+
 export type TokenExchangeResponse = {
   TokenExchangeResponse: {
     header: BasicHeader;
