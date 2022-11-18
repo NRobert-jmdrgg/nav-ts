@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import maskIsoDate from './maskIsoDate';
+import formatIsoDate from './formatIsoDate';
 
 /**
  * request signature létrehozása
@@ -21,7 +21,7 @@ export function createRequestSignature(
   signatureKey: string,
   operations?: Operation[]
 ): string {
-  let partialSignature = requestId + maskIsoDate(timestamp) + signatureKey;
+  let partialSignature = requestId + formatIsoDate(timestamp) + signatureKey;
 
   if (operations) {
     operations.forEach((operation) => {
