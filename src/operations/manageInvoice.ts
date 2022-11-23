@@ -6,6 +6,7 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { ManageInvoiceResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * A számlaadat-szolgáltatás beküldésére szolgáló operáció, ezen keresztül van
@@ -18,7 +19,8 @@ lehetőség számla, módosító vagy stornó számlaadat-szolgáltatást a NAV-
 export default async function manageInvoice(
   user: User,
   software: Software,
-  options: ManageInvoiceOptions
+  options: ManageInvoiceOptions,
+  returnWithXml?: boolean
 ) {
   // sorrend
   options.invoiceOperations.invoiceOperation =
@@ -59,15 +61,28 @@ export default async function manageInvoice(
       )
     );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<ManageInvoiceResponse>(
-    request,
-    'manageInvoice'
+    requestXml,
+    'manageInvoice',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.ManageInvoiceResponse.result,
-        transactionId: response.ManageInvoiceResponse.transactionId,
-      }
-    : null;
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
+        transactionId:
+          response.parsedResponse.ManageInvoiceResponse.transactionId,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      transactionId:
+        response.parsedResponse.ManageInvoiceResponse.transactionId,
+    };
+  }
+
+  return null;
 }

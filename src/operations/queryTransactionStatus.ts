@@ -5,6 +5,7 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryTransactionStatusResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * A számlaadat-szolgáltatás feldolgozás aktuális állapotának és eredményének lekérdezésére szolgáló operáció
@@ -16,7 +17,8 @@ import { pick } from 'lodash';
 export default async function queryTransactionStatus(
   user: User,
   software: Software,
-  options: QueryTransactionStatusOptions
+  options: QueryTransactionStatusOptions,
+  returnWithXml?: boolean
 ) {
   // request létrehozása
   const request = createRequest(
@@ -39,16 +41,30 @@ export default async function queryTransactionStatus(
     user.signatureKey
   );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryTransactionStatusResponse>(
-    request,
-    'queryTransactionStatus'
+    requestXml,
+    'queryTransactionStatus',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.QueryTransactionStatusResponse.result,
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
         processsingResult:
-          response.QueryTransactionStatusResponse.processsingResult,
-      }
-    : null;
+          response.parsedResponse.QueryTransactionStatusResponse
+            .processsingResult,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      processsingResult:
+        response.parsedResponse.QueryTransactionStatusResponse
+          .processsingResult,
+    };
+  }
+
+  return null;
 }

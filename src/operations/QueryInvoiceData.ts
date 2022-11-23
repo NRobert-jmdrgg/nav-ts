@@ -5,6 +5,7 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryInvoiceDataResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * Egy számlaszám alapján működő lekérdező operáció. Az operáció a megadott számlaszám teljes adattartalmát adja
@@ -17,7 +18,8 @@ vissza a válaszban.
 export default async function queryInvoiceData(
   user: User,
   software: Software,
-  options: QueryInvoiceDataOptions
+  options: QueryInvoiceDataOptions,
+  returnWithXml?: boolean
 ) {
   // sorrend
   options.invoiceNumberQuery = pick(options.invoiceNumberQuery, [
@@ -44,17 +46,28 @@ export default async function queryInvoiceData(
     user.signatureKey
   );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryInvoiceDataResponse>(
-    request,
-    'queryInvoiceData'
+    requestXml,
+    'queryInvoiceData',
+    returnWithXml
   );
 
-  response?.QueryInvoiceDataResponse?.invoiceDataResult;
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
+        invoiceDataResult:
+          response.parsedResponse.QueryInvoiceDataResponse.invoiceDataResult,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
 
-  return response
-    ? {
-        result: response.QueryInvoiceDataResponse.result,
-        invoiceDataResult: response.QueryInvoiceDataResponse.invoiceDataResult,
-      }
-    : null;
+    return {
+      invoiceDataResult:
+        response.parsedResponse.QueryInvoiceDataResponse.invoiceDataResult,
+    };
+  }
+
+  return null;
 }

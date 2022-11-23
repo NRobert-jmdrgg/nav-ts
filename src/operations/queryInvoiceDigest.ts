@@ -8,6 +8,7 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryInvoiceDigestResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * Üzleti keresőparaméterek alapján működő lekérdező operáció. Az operáció a megadott keresőfeltételeknek
@@ -20,7 +21,8 @@ megfelelő, lapozható számla listát ad vissza a válaszban.
 export default async function queryInvoiceDigest(
   user: User,
   software: Software,
-  options: QueryInvoiceDigestOptions
+  options: QueryInvoiceDigestOptions,
+  returnWithXml?: boolean
 ) {
   // sorrend
   if (options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate) {
@@ -110,16 +112,29 @@ export default async function queryInvoiceDigest(
     user.signatureKey
   );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryInvoiceDigestResponse>(
-    request,
-    'queryInvoiceDigest'
+    requestXml,
+    'queryInvoiceDigest',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.QueryInvoiceDigestResponse.result,
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
         invoiceDigestResult:
-          response.QueryInvoiceDigestResponse.invoiceDigestResult,
-      }
-    : null;
+          response.parsedResponse.QueryInvoiceDigestResponse
+            .invoiceDigestResult,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      invoiceDigestResult:
+        response.parsedResponse.QueryInvoiceDigestResponse.invoiceDigestResult,
+    };
+  }
+
+  return null;
 }

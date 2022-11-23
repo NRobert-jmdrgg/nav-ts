@@ -1,10 +1,13 @@
-import writeToXML from './utils/writeToXML';
 import axios from 'axios';
 import xml2js from 'xml2js';
 import dotenv from 'dotenv';
-import { InvoiceRequest } from './baseTypes';
 
 dotenv.config();
+
+type Response<R> = {
+  parsedResponse: R | null;
+  responseXml?: string;
+};
 
 /**
  *  Kérés küldése a nav felé.
@@ -15,11 +18,11 @@ dotenv.config();
  *
  */
 export default async function sendRequest<R>(
-  request: InvoiceRequest,
-  operation: string
-): Promise<R | null> {
+  requestXml: string,
+  operation: string,
+  returnWithXml?: boolean
+): Promise<Response<R>> {
   // kérés object xml-be írása
-  const xml = writeToXML(request);
 
   // request küldés
   const xmlparser = new xml2js.Parser({ explicitArray: false });
@@ -27,16 +30,21 @@ export default async function sendRequest<R>(
   try {
     const response = await axios.post(
       `${process.env.API_TEST_URL}${process.env.VERSION}${operation}`,
-      xml,
+      requestXml,
       { headers: { 'Content-Type': 'application/xml' } }
     );
 
-    // válasz xml feldolgozása
+    var responseXml = response.data;
     const xmlNoNamespaceResponse = response.data.replace(/ns2:|ns3:/g, '');
     parsedResponse = await xmlparser.parseStringPromise(xmlNoNamespaceResponse);
   } catch (e: any) {
     console.log(e.response.data);
   }
 
-  return parsedResponse;
+  return !returnWithXml
+    ? { parsedResponse: parsedResponse }
+    : {
+        parsedResponse: parsedResponse,
+        responseXml: responseXml,
+      };
 }

@@ -4,6 +4,8 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import crypto from 'crypto';
 import { User, Software } from '../baseTypes';
 import { TokenExchangeResponse } from './types/response.js';
+import writeToXML from '../utils/writeToXML';
+
 /**
  * A számlaadat-szolgáltatás beküldését megelőző egyszer használatos adatszolgáltatási token kiadását végző operáció.
  * @param user Technikai felhasználó adatai
@@ -12,8 +14,9 @@ import { TokenExchangeResponse } from './types/response.js';
  */
 export default async function getExchangeToken(
   user: User,
-  software: Software
-): Promise<String> {
+  software: Software,
+  returnWithXml?: boolean
+) {
   // request létrehozása
   const request = createRequest('TokenExchangeRequest', user, software);
 
@@ -25,13 +28,15 @@ export default async function getExchangeToken(
       user.signatureKey
     );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<TokenExchangeResponse>(
-    request,
-    'tokenExchange'
+    requestXml,
+    'tokenExchange',
+    returnWithXml
   );
 
   const encryptedToken =
-    response?.TokenExchangeResponse.encodedExchangeToken[0];
+    response.parsedResponse?.TokenExchangeResponse.encodedExchangeToken[0];
 
   // dekódolás
   // iv nem kell
@@ -48,5 +53,17 @@ export default async function getExchangeToken(
     exchangeToken += decipher.final('utf8');
   }
 
-  return exchangeToken;
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
+        exchangeToken: exchangeToken,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return exchangeToken;
+  }
+
+  return null;
 }

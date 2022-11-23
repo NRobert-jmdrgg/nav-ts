@@ -5,6 +5,7 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryTransactionListResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * a kérésben megadott időintervallumban, a technikai felhasználóhoz tartozó
@@ -17,7 +18,8 @@ adószámhoz beküldött számlaadat-szolgáltatások listázására szolgál.
 export default async function queryTransactionList(
   user: User,
   software: Software,
-  options: QueryTransactionListOptions
+  options: QueryTransactionListOptions,
+  returnWithXml?: boolean
 ) {
   // sorrend
   options.insDate = pick(options.insDate, ['dateTimeFrom', 'dateTimeTo']);
@@ -39,16 +41,30 @@ export default async function queryTransactionList(
     user.signatureKey
   );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryTransactionListResponse>(
-    request,
-    'queryTransactionList'
+    requestXml,
+    'queryTransactionList',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.QueryTransactionListResponse.result,
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
         transactionListResult:
-          response.QueryTransactionListResponse.transactionListResult,
-      }
-    : null;
+          response.parsedResponse.QueryTransactionListResponse
+            .transactionListResult,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      transactionListResult:
+        response.parsedResponse.QueryTransactionListResponse
+          .transactionListResult,
+    };
+  }
+
+  return null;
 }

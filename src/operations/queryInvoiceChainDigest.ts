@@ -5,6 +5,7 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryInvoiceChainDigestResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * Az operáció a megadott keresőfeltételeknek megfelelő, lapozható számlalistát ad vissza a válaszban. A lista elemei a megadott alapszámlához tartozó számlalánc elemei
@@ -16,7 +17,8 @@ import { pick } from 'lodash';
 export default async function queryInvoiceChainDigest(
   user: User,
   software: Software,
-  options: QueryInvoiceChainDigestOptions
+  options: QueryInvoiceChainDigestOptions,
+  returnWithXml?: boolean
 ) {
   // sorrend
   options.invoiceChainQuery = pick(options.invoiceChainQuery, [
@@ -46,16 +48,30 @@ export default async function queryInvoiceChainDigest(
     user.signatureKey
   );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryInvoiceChainDigestResponse>(
-    request,
-    'queryInvoiceChainDigest'
+    requestXml,
+    'queryInvoiceChainDigest',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.QueryInvoiceChainDigestResponse.result,
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
         invoiceChainDigestResult:
-          response.QueryInvoiceChainDigestResponse.InvoiceChainDigestResult,
-      }
-    : null;
+          response.parsedResponse.QueryInvoiceChainDigestResponse
+            .InvoiceChainDigestResult,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      invoiceChainDigestResult:
+        response.parsedResponse.QueryInvoiceChainDigestResponse
+          .InvoiceChainDigestResult,
+    };
+  }
+
+  return null;
 }

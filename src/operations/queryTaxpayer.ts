@@ -4,6 +4,7 @@ import { QueryTaxpayerOptions } from './types/options';
 import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryTaxpayerResponse } from './types/response';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * belföldi adószám validáló operáció, mely a számlakiállítás folyamatába építve képes
@@ -16,7 +17,8 @@ a megadott adószám valódiságáról és érvényességéről a NAV adatbázis
 export default async function queryTaxpayer(
   user: User,
   software: Software,
-  options: QueryTaxpayerOptions
+  options: QueryTaxpayerOptions,
+  returnWithXml?: boolean
 ) {
   // request létrehozása
   const request = createRequest(
@@ -34,17 +36,33 @@ export default async function queryTaxpayer(
       user.signatureKey
     );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryTaxpayerResponse>(
-    request,
-    'queryTaxpayer'
+    requestXml,
+    'queryTaxpayer',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.QueryTaxpayerResponse.result,
-        infoDate: response.QueryTaxpayerResponse.infoDate,
-        taxpayerData: response.QueryTaxpayerResponse.taxpayerData,
-        taxpayerValidity: response.QueryTaxpayerResponse.taxpayerValidity,
-      }
-    : null;
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
+        infoDate: response.parsedResponse.QueryTaxpayerResponse.infoDate,
+        taxpayerData:
+          response.parsedResponse.QueryTaxpayerResponse.taxpayerData,
+        taxpayerValidity:
+          response.parsedResponse.QueryTaxpayerResponse.taxpayerValidity,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      infoDate: response.parsedResponse.QueryTaxpayerResponse.infoDate,
+      taxpayerData: response.parsedResponse.QueryTaxpayerResponse.taxpayerData,
+      taxpayerValidity:
+        response.parsedResponse.QueryTaxpayerResponse.taxpayerValidity,
+    };
+  }
+
+  return null;
 }

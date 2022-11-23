@@ -9,6 +9,7 @@ import {
 import sendRequest from '../sendRequest';
 import { ManageAnnulmentResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * Operáció a technikai érvénytelenítések beküldésére szolgáló operáció
@@ -20,7 +21,8 @@ import { pick } from 'lodash';
 export default async function manageAnnulment(
   user: User,
   software: Software,
-  options: ManageAnnulmentOptions
+  options: ManageAnnulmentOptions,
+  returnWithXml?: boolean
 ) {
   // sorrend
   options.annulmentOperations.annumentOperation =
@@ -52,15 +54,28 @@ export default async function manageAnnulment(
     )
   );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<ManageAnnulmentResponse>(
-    request,
-    'manageAnnulment'
+    requestXml,
+    'manageAnnulment',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.BasicAnnulmentResponse.result,
-        transactionId: response.BasicAnnulmentResponse.transactionId,
-      }
-    : null;
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
+        transactionId:
+          response.parsedResponse.BasicAnnulmentResponse.transactionId,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      transactionId:
+        response.parsedResponse.BasicAnnulmentResponse.transactionId,
+    };
+  }
+
+  return null;
 }

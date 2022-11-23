@@ -5,6 +5,7 @@ import { createRequestSignature } from '../utils/createRequestSignature';
 import sendRequest from '../sendRequest';
 import { QueryInvoiceCheckResponse } from './types/response';
 import { pick } from 'lodash';
+import writeToXML from '../utils/writeToXML';
 
 /**
  * Számlaszám alapján működő lekérdező operáció. Az operáció a megadott számlaszámról szóló adatszolgáltatás
@@ -17,7 +18,8 @@ létezését ellenőrzi a rendszerben, a számla teljes adattartalmának visszaa
 export default async function queryInvoiceCheck(
   user: User,
   software: Software,
-  options: QueryInvoiceCheckOptions
+  options: QueryInvoiceCheckOptions,
+  returnWithXml?: boolean
 ) {
   // sorrend
   options.invoiceNumberQuery = pick(options.invoiceNumberQuery, [
@@ -44,16 +46,28 @@ export default async function queryInvoiceCheck(
     user.signatureKey
   );
 
+  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryInvoiceCheckResponse>(
-    request,
-    'queryInvoiceCheck'
+    requestXml,
+    'queryInvoiceCheck',
+    returnWithXml
   );
 
-  return response
-    ? {
-        result: response.QueryInvoiceCheckResponse.result,
+  if (response.parsedResponse) {
+    if (returnWithXml) {
+      return {
         invoiceCheckResult:
-          response.QueryInvoiceCheckResponse.invoiceCheckResult,
-      }
-    : null;
+          response.parsedResponse.QueryInvoiceCheckResponse.invoiceCheckResult,
+        responseXml: response.responseXml,
+        requestXml: requestXml,
+      };
+    }
+
+    return {
+      invoiceCheckResult:
+        response.parsedResponse.QueryInvoiceCheckResponse.invoiceCheckResult,
+    };
+  }
+
+  return null;
 }
