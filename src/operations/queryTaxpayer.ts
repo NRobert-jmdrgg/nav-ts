@@ -36,30 +36,17 @@ export default async function queryTaxpayer(
       user.signatureKey
     );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryTaxpayerResponse>(
-    requestXml,
+    writeToXML(request),
     'queryTaxpayer',
     returnWithXml
   );
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
-        infoDate: response.parsedResponse.infoDate?.[0],
-        taxpayerData: response.parsedResponse.taxpayerData?.[0],
-        taxpayerValidity: response.parsedResponse.taxpayerValidity?.[0],
+  return response.parsedResponse
+    ? {
+        ...response.parsedResponse,
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return {
-      infoDate: response.parsedResponse.infoDate?.[0],
-      taxpayerData: response.parsedResponse.taxpayerData?.[0],
-      taxpayerValidity: response.parsedResponse.taxpayerValidity?.[0],
-    };
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }

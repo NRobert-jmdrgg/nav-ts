@@ -46,26 +46,17 @@ export default async function queryInvoiceCheck(
     user.signatureKey
   );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryInvoiceCheckResponse>(
-    requestXml,
+    writeToXML(request),
     'queryInvoiceCheck',
     returnWithXml
   );
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
+  return response.parsedResponse
+    ? {
         invoiceCheckResult: response.parsedResponse.invoiceCheckResult[0],
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return {
-      invoiceCheckResult: response.parsedResponse.invoiceCheckResult[0],
-    };
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }

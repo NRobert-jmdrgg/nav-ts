@@ -7,6 +7,7 @@ dotenv.config();
 type Response<R> = {
   parsedResponse: R | null;
   responseXml?: string;
+  requestXml?: string;
 };
 
 /**
@@ -43,10 +44,9 @@ export default async function sendRequest<R>(
     console.log(e.response.data);
   }
 
-  return !returnWithXml
-    ? { parsedResponse: parsedResponse }
-    : {
-        parsedResponse: parsedResponse,
-        responseXml: responseXml,
-      };
+  return {
+    parsedResponse: parsedResponse,
+    responseXml: returnWithXml ? responseXml : undefined,
+    requestXml: returnWithXml ? requestXml : undefined,
+  };
 }

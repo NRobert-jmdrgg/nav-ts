@@ -61,26 +61,17 @@ export default async function manageInvoice(
       )
     );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<ManageInvoiceResponse>(
-    requestXml,
+    writeToXML(request),
     'manageInvoice',
     returnWithXml
   );
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
+  return response.parsedResponse
+    ? {
         transactionId: response.parsedResponse.transactionId[0],
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return {
-      transactionId: response.parsedResponse.transactionId[0],
-    };
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }

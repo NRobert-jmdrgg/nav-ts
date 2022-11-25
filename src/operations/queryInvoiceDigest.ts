@@ -112,26 +112,17 @@ export default async function queryInvoiceDigest(
     user.signatureKey
   );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryInvoiceDigestResponse>(
-    requestXml,
+    writeToXML(request),
     'queryInvoiceDigest',
     returnWithXml
   );
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
-        invoiceDigestResult: response.parsedResponse.invoiceDigestResult[0],
+  return response.parsedResponse
+    ? {
+        ...response.parsedResponse.invoiceDigestResult[0],
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return {
-      invoiceDigestResult: response.parsedResponse.invoiceDigestResult[0],
-    };
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }

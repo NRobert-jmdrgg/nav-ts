@@ -48,28 +48,17 @@ export default async function queryInvoiceChainDigest(
     user.signatureKey
   );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryInvoiceChainDigestResponse>(
-    requestXml,
+    writeToXML(request),
     'queryInvoiceChainDigest',
     returnWithXml
   );
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
-        invoiceChainDigestResult:
-          response.parsedResponse.InvoiceChainDigestResult[0],
+  return response.parsedResponse
+    ? {
+        ...response.parsedResponse.InvoiceChainDigestResult[0],
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return {
-      invoiceChainDigestResult:
-        response.parsedResponse.InvoiceChainDigestResult[0],
-    };
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }

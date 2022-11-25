@@ -54,26 +54,17 @@ export default async function manageAnnulment(
     )
   );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<ManageAnnulmentResponse>(
-    requestXml,
+    writeToXML(request),
     'manageAnnulment',
     returnWithXml
   );
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
+  return response.parsedResponse
+    ? {
         transactionId: response.parsedResponse.transactionId[0],
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return {
-      transactionId: response.parsedResponse.transactionId[0],
-    };
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }

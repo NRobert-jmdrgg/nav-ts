@@ -41,26 +41,17 @@ export default async function queryTransactionStatus(
     user.signatureKey
   );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<QueryTransactionStatusResponse>(
-    requestXml,
+    writeToXML(request),
     'queryTransactionStatus',
     returnWithXml
   );
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
-        processsingResult: response.parsedResponse.processsingResult?.[0],
+  return response.parsedResponse
+    ? {
+        ...response.parsedResponse.processsingResult?.[0],
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return {
-      processsingResult: response.parsedResponse.processsingResult?.[0],
-    };
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }

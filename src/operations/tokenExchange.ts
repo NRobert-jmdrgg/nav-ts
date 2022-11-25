@@ -28,9 +28,8 @@ export default async function getExchangeToken(
       user.signatureKey
     );
 
-  const requestXml = writeToXML(request);
   const response = await sendRequest<TokenExchangeResponse>(
-    requestXml,
+    writeToXML(request),
     'tokenExchange',
     returnWithXml
   );
@@ -52,17 +51,11 @@ export default async function getExchangeToken(
     exchangeToken += decipher.final('utf8');
   }
 
-  if (response.parsedResponse) {
-    if (returnWithXml) {
-      return {
+  return response.parsedResponse
+    ? {
         exchangeToken: exchangeToken,
         responseXml: response.responseXml,
-        requestXml: requestXml,
-      };
-    }
-
-    return exchangeToken;
-  }
-
-  return null;
+        requestXml: response.requestXml,
+      }
+    : null;
 }
