@@ -25,7 +25,9 @@ export default async function sendRequest<R>(
   // kérés object xml-be írása
 
   // request küldés
-  const xmlparser = new xml2js.Parser({ explicitArray: false });
+  const xmlparser = new xml2js.Parser({
+    explicitRoot: false,
+  });
   let parsedResponse = null;
   try {
     const response = await axios.post(

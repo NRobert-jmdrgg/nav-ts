@@ -59,8 +59,7 @@ export default async function queryInvoiceChainDigest(
     if (returnWithXml) {
       return {
         invoiceChainDigestResult:
-          response.parsedResponse.QueryInvoiceChainDigestResponse
-            .InvoiceChainDigestResult,
+          response.parsedResponse.InvoiceChainDigestResult,
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
@@ -68,8 +67,7 @@ export default async function queryInvoiceChainDigest(
 
     return {
       invoiceChainDigestResult:
-        response.parsedResponse.QueryInvoiceChainDigestResponse
-          .InvoiceChainDigestResult,
+        response.parsedResponse.InvoiceChainDigestResult,
     };
   }
 

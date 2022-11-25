@@ -35,8 +35,7 @@ export default async function getExchangeToken(
     returnWithXml
   );
 
-  const encryptedToken =
-    response.parsedResponse?.TokenExchangeResponse.encodedExchangeToken[0];
+  const encryptedToken = response.parsedResponse?.encodedExchangeToken[0];
 
   // dekódolás
   // iv nem kell

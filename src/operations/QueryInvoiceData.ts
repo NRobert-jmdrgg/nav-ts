@@ -56,16 +56,14 @@ export default async function queryInvoiceData(
   if (response.parsedResponse) {
     if (returnWithXml) {
       return {
-        invoiceDataResult:
-          response.parsedResponse.QueryInvoiceDataResponse.invoiceDataResult,
+        invoiceDataResult: response.parsedResponse.invoiceDataResult,
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
     }
 
     return {
-      invoiceDataResult:
-        response.parsedResponse.QueryInvoiceDataResponse.invoiceDataResult,
+      invoiceDataResult: response.parsedResponse.invoiceDataResult,
     };
   }
 

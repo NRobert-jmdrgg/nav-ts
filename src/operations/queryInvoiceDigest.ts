@@ -122,17 +122,14 @@ export default async function queryInvoiceDigest(
   if (response.parsedResponse) {
     if (returnWithXml) {
       return {
-        invoiceDigestResult:
-          response.parsedResponse.QueryInvoiceDigestResponse
-            .invoiceDigestResult,
+        invoiceDigestResult: response.parsedResponse.invoiceDigestResult,
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
     }
 
     return {
-      invoiceDigestResult:
-        response.parsedResponse.QueryInvoiceDigestResponse.invoiceDigestResult,
+      invoiceDigestResult: response.parsedResponse.invoiceDigestResult,
     };
   }
 

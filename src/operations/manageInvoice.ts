@@ -71,16 +71,14 @@ export default async function manageInvoice(
   if (response.parsedResponse) {
     if (returnWithXml) {
       return {
-        transactionId:
-          response.parsedResponse.ManageInvoiceResponse.transactionId,
+        transactionId: response.parsedResponse.transactionId,
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
     }
 
     return {
-      transactionId:
-        response.parsedResponse.ManageInvoiceResponse.transactionId,
+      transactionId: response.parsedResponse.transactionId,
     };
   }
 

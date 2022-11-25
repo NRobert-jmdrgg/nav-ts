@@ -51,18 +51,14 @@ export default async function queryTransactionList(
   if (response.parsedResponse) {
     if (returnWithXml) {
       return {
-        transactionListResult:
-          response.parsedResponse.QueryTransactionListResponse
-            .transactionListResult,
+        transactionListResult: response.parsedResponse.transactionListResult,
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
     }
 
     return {
-      transactionListResult:
-        response.parsedResponse.QueryTransactionListResponse
-          .transactionListResult,
+      transactionListResult: response.parsedResponse.transactionListResult,
     };
   }
 

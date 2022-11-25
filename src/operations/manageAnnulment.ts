@@ -64,16 +64,14 @@ export default async function manageAnnulment(
   if (response.parsedResponse) {
     if (returnWithXml) {
       return {
-        transactionId:
-          response.parsedResponse.BasicAnnulmentResponse.transactionId,
+        transactionId: response.parsedResponse.transactionId,
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
     }
 
     return {
-      transactionId:
-        response.parsedResponse.BasicAnnulmentResponse.transactionId,
+      transactionId: response.parsedResponse.transactionId,
     };
   }
 

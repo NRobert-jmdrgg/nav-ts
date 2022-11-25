@@ -22,10 +22,10 @@ export type Software = {
 };
 
 export type BasicHeader = {
-  requestId: string;
-  timestamp: string;
-  requestVersion: string;
-  headerVersion?: string;
+  requestId: [string];
+  timestamp: [string];
+  requestVersion: [string];
+  headerVersion?: [string];
 };
 
 export type CommonBasicHeader = {
@@ -65,13 +65,13 @@ export type InvoiceRequest = {
 };
 
 export type BasicResult = {
-  funcCode: string;
-  errorCode?: string;
-  message?: string;
+  funcCode: [string];
+  errorCode?: [string];
+  message?: [string];
   notifications: {
     notification: {
-      notificationCode: string;
-      notificationText: string;
+      notificationCode: [string];
+      notificationText: [string];
     }[];
   };
 };
