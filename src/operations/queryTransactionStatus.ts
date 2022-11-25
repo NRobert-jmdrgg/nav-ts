@@ -51,14 +51,14 @@ export default async function queryTransactionStatus(
   if (response.parsedResponse) {
     if (returnWithXml) {
       return {
-        processsingResult: response.parsedResponse.processsingResult,
+        processsingResult: response.parsedResponse.processsingResult?.[0],
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
     }
 
     return {
-      processsingResult: response.parsedResponse.processsingResult,
+      processsingResult: response.parsedResponse.processsingResult?.[0],
     };
   }
 

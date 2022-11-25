@@ -211,37 +211,41 @@ export type QueryTaxpayerResponse = {
   Software: [Software];
   infoDate?: [Date];
   taxpayerValidity?: [boolean];
-  taxpayerData?: {
-    taxpayerName: [string];
-    taxpayerShortName?: [string];
-    taxNumberDetail: {
-      taxpayerId: [string];
-      vatCode?: [string];
-      countyCode?: [string];
-    };
-    incorporation: [string];
-    vatGroupMembership?: [string];
-    taxpayeraddressList?: [
-      {
-        taxpayerAddressItem: {
-          taxpayerAddressType: [string];
-          taxpayerAddress: [
-            {
-              region?: [string];
-              postalCode: [string];
-              city: [string];
-              streetName: [string];
-              publicPlaceCategory: [string];
-              number?: [string];
-              building?: [string];
-              staircase?: [string];
-              floor?: [string];
-              door?: [string];
-              lotNumber?: [string];
-            }
-          ];
-        }[];
-      }
-    ];
-  };
+  taxpayerData?: [
+    {
+      taxpayerName: [string];
+      taxpayerShortName?: [string];
+      taxNumberDetail: [
+        {
+          taxpayerId: [string];
+          vatCode?: [string];
+          countyCode?: [string];
+        }
+      ];
+      incorporation: [string];
+      vatGroupMembership?: [string];
+      taxpayeraddressList?: [
+        {
+          taxpayerAddressItem: {
+            taxpayerAddressType: [string];
+            taxpayerAddress: [
+              {
+                region?: [string];
+                postalCode: [string];
+                city: [string];
+                streetName: [string];
+                publicPlaceCategory: [string];
+                number?: [string];
+                building?: [string];
+                staircase?: [string];
+                floor?: [string];
+                door?: [string];
+                lotNumber?: [string];
+              }
+            ];
+          }[];
+        }
+      ];
+    }
+  ];
 };

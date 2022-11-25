@@ -46,18 +46,18 @@ export default async function queryTaxpayer(
   if (response.parsedResponse) {
     if (returnWithXml) {
       return {
-        infoDate: response.parsedResponse.infoDate,
-        taxpayerData: response.parsedResponse.taxpayerData,
-        taxpayerValidity: response.parsedResponse.taxpayerValidity,
+        infoDate: response.parsedResponse.infoDate?.[0],
+        taxpayerData: response.parsedResponse.taxpayerData?.[0],
+        taxpayerValidity: response.parsedResponse.taxpayerValidity?.[0],
         responseXml: response.responseXml,
         requestXml: requestXml,
       };
     }
 
     return {
-      infoDate: response.parsedResponse.infoDate,
-      taxpayerData: response.parsedResponse.taxpayerData,
-      taxpayerValidity: response.parsedResponse.taxpayerValidity,
+      infoDate: response.parsedResponse.infoDate?.[0],
+      taxpayerData: response.parsedResponse.taxpayerData?.[0],
+      taxpayerValidity: response.parsedResponse.taxpayerValidity?.[0],
     };
   }
 
