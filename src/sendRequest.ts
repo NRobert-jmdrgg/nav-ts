@@ -28,6 +28,8 @@ export default async function sendRequest<R>(
   // request küldés
   const xmlparser = new xml2js.Parser({
     explicitRoot: false,
+    tagNameProcessors: [xml2js.processors.stripPrefix],
+    attrNameProcessors: [xml2js.processors.stripPrefix],
   });
   let parsedResponse = null;
   try {
@@ -38,8 +40,7 @@ export default async function sendRequest<R>(
     );
 
     var responseXml = response.data;
-    const xmlNoNamespaceResponse = response.data.replace(/ns2:|ns3:/g, '');
-    parsedResponse = await xmlparser.parseStringPromise(xmlNoNamespaceResponse);
+    parsedResponse = await xmlparser.parseStringPromise(responseXml);
   } catch (e: any) {
     console.log(e.response.data);
   }
