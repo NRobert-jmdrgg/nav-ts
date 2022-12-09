@@ -2,7 +2,7 @@ import { User, Software } from '../baseTypes';
 import createRequest from '../createRequest';
 import { QueryTaxpayerOptions } from './types/options';
 import { createRequestSignature } from '../utils/createRequestSignature';
-import sendRequest from '../sendRequest';
+import sendNavRequest from '../sendNavRequest';
 import { QueryTaxpayerResponse } from './types/response';
 import writeToXML from '../utils/writeToXML';
 
@@ -36,11 +36,30 @@ export default async function queryTaxpayer(
       user.signatureKey
     );
 
-  const response = await sendRequest<QueryTaxpayerResponse>(
+  const response = await sendNavRequest<QueryTaxpayerResponse>(
     writeToXML(request),
     'queryTaxpayer',
     returnWithXml
   );
+
+  // array fix
+  if (
+    response.parsedResponse?.taxpayerData?.taxpayeraddressList
+      ?.taxpayerAddressItem
+  ) {
+    if (
+      !Array.isArray(
+        response.parsedResponse.taxpayerData.taxpayeraddressList
+          .taxpayerAddressItem
+      )
+    ) {
+      response.parsedResponse.taxpayerData.taxpayeraddressList.taxpayerAddressItem =
+        [
+          response.parsedResponse.taxpayerData.taxpayeraddressList
+            .taxpayerAddressItem,
+        ];
+    }
+  }
 
   return response.parsedResponse
     ? {

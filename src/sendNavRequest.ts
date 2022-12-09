@@ -1,6 +1,7 @@
 import axios from 'axios';
 import xml2js from 'xml2js';
 import dotenv from 'dotenv';
+import readFromXml from './utils/readFromXml';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ type Response<R> = {
  * @returns Promise<R | null> válasz object
  *
  */
-export default async function sendRequest<R>(
+export default async function sendNavRequest<R>(
   requestXml: string,
   operation: string,
   returnWithXml?: boolean
@@ -26,11 +27,6 @@ export default async function sendRequest<R>(
   // kérés object xml-be írása
 
   // request küldés
-  const xmlparser = new xml2js.Parser({
-    explicitRoot: false,
-    tagNameProcessors: [xml2js.processors.stripPrefix],
-    attrNameProcessors: [xml2js.processors.stripPrefix],
-  });
   let parsedResponse = null;
   try {
     const response = await axios.post(
@@ -40,7 +36,7 @@ export default async function sendRequest<R>(
     );
 
     var responseXml = response.data;
-    parsedResponse = await xmlparser.parseStringPromise(responseXml);
+    parsedResponse = await readFromXml(responseXml);
   } catch (e: any) {
     console.log(e.response.data);
   }

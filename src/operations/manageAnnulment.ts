@@ -6,7 +6,7 @@ import {
   createRequestSignature,
   Operation,
 } from '../utils/createRequestSignature';
-import sendRequest from '../sendRequest';
+import sendNavRequest from '../sendNavRequest';
 import { ManageAnnulmentResponse } from './types/response';
 import { pick } from 'lodash';
 import writeToXML from '../utils/writeToXML';
@@ -54,7 +54,7 @@ export default async function manageAnnulment(
     )
   );
 
-  const response = await sendRequest<ManageAnnulmentResponse>(
+  const response = await sendNavRequest<ManageAnnulmentResponse>(
     writeToXML(request),
     'manageAnnulment',
     returnWithXml
@@ -62,7 +62,7 @@ export default async function manageAnnulment(
 
   return response.parsedResponse
     ? {
-        transactionId: response.parsedResponse.transactionId[0],
+        transactionId: response.parsedResponse.transactionId,
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

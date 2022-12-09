@@ -2,7 +2,7 @@ import { User, Software } from '../baseTypes';
 import createRequest from '../createRequest';
 import { QueryTransactionListOptions } from './types/options';
 import { createRequestSignature } from '../utils/createRequestSignature';
-import sendRequest from '../sendRequest';
+import sendNavRequest from '../sendNavRequest';
 import { QueryTransactionListResponse } from './types/response';
 import { pick } from 'lodash';
 import writeToXML from '../utils/writeToXML';
@@ -41,15 +41,26 @@ export default async function queryTransactionList(
     user.signatureKey
   );
 
-  const response = await sendRequest<QueryTransactionListResponse>(
+  const response = await sendNavRequest<QueryTransactionListResponse>(
     writeToXML(request),
     'queryTransactionList',
     returnWithXml
   );
 
+  //array fix
+  if (response.parsedResponse?.transactionListResult.transaction) {
+    if (
+      !Array.isArray(response.parsedResponse.transactionListResult.transaction)
+    ) {
+      response.parsedResponse.transactionListResult.transaction = [
+        response.parsedResponse.transactionListResult.transaction,
+      ];
+    }
+  }
+
   return response.parsedResponse
     ? {
-        ...response.parsedResponse.transactionListResult[0],
+        ...response.parsedResponse.transactionListResult,
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

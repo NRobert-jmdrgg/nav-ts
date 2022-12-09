@@ -3,7 +3,7 @@ import createRequest from '../createRequest';
 import { ManageInvoiceOptions } from './types/options';
 import { Operation } from '../utils/createRequestSignature';
 import { createRequestSignature } from '../utils/createRequestSignature';
-import sendRequest from '../sendRequest';
+import sendNavRequest from '../sendNavRequest';
 import { ManageInvoiceResponse } from './types/response';
 import { pick } from 'lodash';
 import writeToXML from '../utils/writeToXML';
@@ -61,7 +61,7 @@ export default async function manageInvoice(
       )
     );
 
-  const response = await sendRequest<ManageInvoiceResponse>(
+  const response = await sendNavRequest<ManageInvoiceResponse>(
     writeToXML(request),
     'manageInvoice',
     returnWithXml
@@ -69,7 +69,7 @@ export default async function manageInvoice(
 
   return response.parsedResponse
     ? {
-        transactionId: response.parsedResponse.transactionId[0],
+        transactionId: response.parsedResponse.transactionId,
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

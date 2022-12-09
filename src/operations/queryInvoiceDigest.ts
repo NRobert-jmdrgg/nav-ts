@@ -5,9 +5,9 @@ import {
   RelationQueryMonetary,
 } from './types/options';
 import { createRequestSignature } from '../utils/createRequestSignature';
-import sendRequest from '../sendRequest';
+import sendNavRequest from '../sendNavRequest';
 import { QueryInvoiceDigestResponse } from './types/response';
-import { pick } from 'lodash';
+import { pick, toArray } from 'lodash';
 import writeToXML from '../utils/writeToXML';
 
 /**
@@ -112,15 +112,26 @@ export default async function queryInvoiceDigest(
     user.signatureKey
   );
 
-  const response = await sendRequest<QueryInvoiceDigestResponse>(
+  const response = await sendNavRequest<QueryInvoiceDigestResponse>(
     writeToXML(request),
     'queryInvoiceDigest',
     returnWithXml
   );
 
+  // ha egy elemű listát ad vissza azt nem rakja listába alapból.
+  if (response.parsedResponse?.invoiceDigestResult.invoiceDigest) {
+    if (
+      !Array.isArray(response.parsedResponse?.invoiceDigestResult.invoiceDigest)
+    ) {
+      response.parsedResponse.invoiceDigestResult.invoiceDigest = [
+        response.parsedResponse?.invoiceDigestResult.invoiceDigest,
+      ];
+    }
+  }
+
   return response.parsedResponse
     ? {
-        ...response.parsedResponse.invoiceDigestResult[0],
+        ...response.parsedResponse.invoiceDigestResult,
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

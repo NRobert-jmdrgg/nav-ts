@@ -2,7 +2,7 @@ import { User, Software } from '../baseTypes';
 import createRequest from '../createRequest';
 import { QueryInvoiceDataOptions } from './types/options';
 import { createRequestSignature } from '../utils/createRequestSignature';
-import sendRequest from '../sendRequest';
+import sendNavRequest from '../sendNavRequest';
 import { QueryInvoiceDataResponse } from './types/response';
 import { pick } from 'lodash';
 import writeToXML from '../utils/writeToXML';
@@ -46,7 +46,7 @@ export default async function queryInvoiceData(
     user.signatureKey
   );
 
-  const response = await sendRequest<QueryInvoiceDataResponse>(
+  const response = await sendNavRequest<QueryInvoiceDataResponse>(
     writeToXML(request),
     'queryInvoiceData',
     returnWithXml
@@ -54,7 +54,7 @@ export default async function queryInvoiceData(
 
   return response.parsedResponse
     ? {
-        ...response.parsedResponse.invoiceDataResult?.[0],
+        ...response.parsedResponse.invoiceDataResult,
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

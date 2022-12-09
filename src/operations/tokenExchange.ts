@@ -1,5 +1,5 @@
 import createRequest from '../createRequest.js';
-import sendRequest from '../sendRequest.js';
+import sendNavRequest from '../sendNavRequest.js';
 import { createRequestSignature } from '../utils/createRequestSignature';
 import crypto from 'crypto';
 import { User, Software } from '../baseTypes';
@@ -28,13 +28,13 @@ export default async function getExchangeToken(
       user.signatureKey
     );
 
-  const response = await sendRequest<TokenExchangeResponse>(
+  const response = await sendNavRequest<TokenExchangeResponse>(
     writeToXML(request),
     'tokenExchange',
     returnWithXml
   );
 
-  const encryptedToken = response.parsedResponse?.encodedExchangeToken[0];
+  const encryptedToken = response.parsedResponse?.encodedExchangeToken;
 
   // dekódolás
   // iv nem kell
