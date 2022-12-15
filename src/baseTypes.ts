@@ -21,6 +21,17 @@ export type Software = {
   softwareDevTaxNumber?: string;
 };
 
+export type resSoftware = {
+  softwareId: [string];
+  softwareName: [string];
+  softwareOperation: [string];
+  softwareMainVersion: [string];
+  softwareDevName: [string];
+  softwareDevContact: [string];
+  softwareDevCountryCode?: [string];
+  softwareDevTaxNumber?: [string];
+};
+
 export type BasicHeader = {
   requestId: [string];
   timestamp: [string];
@@ -68,10 +79,12 @@ export type BasicResult = {
   funcCode: [string];
   errorCode?: [string];
   message?: [string];
-  notifications: {
-    notification: {
-      notificationCode: [string];
-      notificationText: [string];
-    }[];
-  };
+  notifications: [
+    {
+      notification: {
+        notificationCode: [string];
+        notificationText: [string];
+      }[];
+    }
+  ];
 };
