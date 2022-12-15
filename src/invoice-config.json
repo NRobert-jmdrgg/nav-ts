@@ -1,7 +1,0 @@
-{
-  "configPostfix": "simpleSoft",
-  "fetchInboundData": true,
-  "fetchOutboundData": false,
-  "lastDateOfInboundFetch": "",
-  "lastDateOfOutboundFetch": ""
-}
