@@ -22,7 +22,7 @@ export default async function queryInvoiceDigest(
   user: User,
   software: Software,
   options: QueryInvoiceDigestOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // sorrend
   if (options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate) {
@@ -118,20 +118,12 @@ export default async function queryInvoiceDigest(
     returnWithXml
   );
 
-  // ha egy elemű listát ad vissza azt nem rakja listába alapból.
-  if (response.parsedResponse?.invoiceDigestResult.invoiceDigest) {
-    if (
-      !Array.isArray(response.parsedResponse?.invoiceDigestResult.invoiceDigest)
-    ) {
-      response.parsedResponse.invoiceDigestResult.invoiceDigest = [
-        response.parsedResponse?.invoiceDigestResult.invoiceDigest,
-      ];
-    }
-  }
-
   return response.parsedResponse
     ? {
-        ...response.parsedResponse.invoiceDigestResult,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        invoiceDigestResult: response.parsedResponse.invoiceDigestResult[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

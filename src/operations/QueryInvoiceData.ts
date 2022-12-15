@@ -19,7 +19,7 @@ export default async function queryInvoiceData(
   user: User,
   software: Software,
   options: QueryInvoiceDataOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // sorrend
   options.invoiceNumberQuery = pick(options.invoiceNumberQuery, [
@@ -54,7 +54,10 @@ export default async function queryInvoiceData(
 
   return response.parsedResponse
     ? {
-        ...response.parsedResponse.invoiceDataResult,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        invoiceDataResult: response.parsedResponse.invoiceDataResult?.[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

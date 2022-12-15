@@ -22,7 +22,7 @@ export default async function manageAnnulment(
   user: User,
   software: Software,
   options: ManageAnnulmentOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // sorrend
   options.annulmentOperations.annumentOperation =
@@ -62,7 +62,10 @@ export default async function manageAnnulment(
 
   return response.parsedResponse
     ? {
-        transactionId: response.parsedResponse.transactionId,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        transactionId: response.parsedResponse.transactionId[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

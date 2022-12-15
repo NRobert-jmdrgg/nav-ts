@@ -19,7 +19,7 @@ export default async function queryInvoiceChainDigest(
   user: User,
   software: Software,
   options: QueryInvoiceChainDigestOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // sorrend
   options.invoiceChainQuery = pick(options.invoiceChainQuery, [
@@ -55,36 +55,13 @@ export default async function queryInvoiceChainDigest(
     returnWithXml
   );
 
-  // array fix
-  if (response.parsedResponse?.InvoiceChainDigestResult.invoiceChainElement) {
-    if (
-      !Array.isArray(
-        response.parsedResponse.InvoiceChainDigestResult.invoiceChainElement
-      )
-    ) {
-      response.parsedResponse.InvoiceChainDigestResult.invoiceChainElement = [
-        response.parsedResponse.InvoiceChainDigestResult.invoiceChainElement,
-      ];
-    }
-
-    response.parsedResponse.InvoiceChainDigestResult.invoiceChainElement =
-      response.parsedResponse.InvoiceChainDigestResult.invoiceChainElement.map(
-        (ice) => {
-          if (ice.invoiceLines) {
-            if (!Array.isArray(ice.invoiceLines.newCreatedLines)) {
-              ice.invoiceLines.newCreatedLines = [
-                ice.invoiceLines.newCreatedLines,
-              ];
-            }
-          }
-          return ice;
-        }
-      );
-  }
-
   return response.parsedResponse
     ? {
-        ...response.parsedResponse.InvoiceChainDigestResult,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        invoiceChainDigestResult:
+          response.parsedResponse.InvoiceChainDigestResult[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

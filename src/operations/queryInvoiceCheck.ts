@@ -19,7 +19,7 @@ export default async function queryInvoiceCheck(
   user: User,
   software: Software,
   options: QueryInvoiceCheckOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // sorrend
   options.invoiceNumberQuery = pick(options.invoiceNumberQuery, [
@@ -54,7 +54,10 @@ export default async function queryInvoiceCheck(
 
   return response.parsedResponse
     ? {
-        invoiceCheckResult: response.parsedResponse.invoiceCheckResult,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        invoiceCheckResult: response.parsedResponse.invoiceCheckResult[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

@@ -15,7 +15,7 @@ import writeToXML from '../utils/writeToXML';
 export default async function getExchangeToken(
   user: User,
   software: Software,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // request létrehozása
   const request = createRequest('TokenExchangeRequest', user, software);
@@ -34,7 +34,7 @@ export default async function getExchangeToken(
     returnWithXml
   );
 
-  const encryptedToken = response.parsedResponse?.encodedExchangeToken;
+  const encryptedToken = response.parsedResponse?.encodedExchangeToken[0];
 
   // dekódolás
   // iv nem kell
@@ -53,6 +53,9 @@ export default async function getExchangeToken(
 
   return response.parsedResponse
     ? {
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
         exchangeToken: exchangeToken,
         responseXml: response.responseXml,
         requestXml: response.requestXml,

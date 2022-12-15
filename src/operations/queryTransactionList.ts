@@ -19,7 +19,7 @@ export default async function queryTransactionList(
   user: User,
   software: Software,
   options: QueryTransactionListOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // sorrend
   options.insDate = pick(options.insDate, ['dateTimeFrom', 'dateTimeTo']);
@@ -47,20 +47,12 @@ export default async function queryTransactionList(
     returnWithXml
   );
 
-  //array fix
-  if (response.parsedResponse?.transactionListResult.transaction) {
-    if (
-      !Array.isArray(response.parsedResponse.transactionListResult.transaction)
-    ) {
-      response.parsedResponse.transactionListResult.transaction = [
-        response.parsedResponse.transactionListResult.transaction,
-      ];
-    }
-  }
-
   return response.parsedResponse
     ? {
-        ...response.parsedResponse.transactionListResult,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        transactionListResult: response.parsedResponse.transactionListResult[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

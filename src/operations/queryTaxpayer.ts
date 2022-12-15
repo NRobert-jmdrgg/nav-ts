@@ -18,7 +18,7 @@ export default async function queryTaxpayer(
   user: User,
   software: Software,
   options: QueryTaxpayerOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // request létrehozása
   const request = createRequest(
@@ -42,28 +42,14 @@ export default async function queryTaxpayer(
     returnWithXml
   );
 
-  // array fix
-  if (
-    response.parsedResponse?.taxpayerData?.taxpayeraddressList
-      ?.taxpayerAddressItem
-  ) {
-    if (
-      !Array.isArray(
-        response.parsedResponse.taxpayerData.taxpayeraddressList
-          .taxpayerAddressItem
-      )
-    ) {
-      response.parsedResponse.taxpayerData.taxpayeraddressList.taxpayerAddressItem =
-        [
-          response.parsedResponse.taxpayerData.taxpayeraddressList
-            .taxpayerAddressItem,
-        ];
-    }
-  }
-
   return response.parsedResponse
     ? {
-        ...response.parsedResponse,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        infoDate: response.parsedResponse.infoDate?.[0],
+        taxpayerValidity: response.parsedResponse.taxpayerValidity?.[0],
+        taxpayerData: response.parsedResponse.taxpayerData?.[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

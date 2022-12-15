@@ -20,7 +20,7 @@ export default async function manageInvoice(
   user: User,
   software: Software,
   options: ManageInvoiceOptions,
-  returnWithXml?: boolean
+  returnWithXml = true
 ) {
   // sorrend
   options.invoiceOperations.invoiceOperation =
@@ -69,7 +69,10 @@ export default async function manageInvoice(
 
   return response.parsedResponse
     ? {
-        transactionId: response.parsedResponse.transactionId,
+        header: response.parsedResponse.header[0],
+        result: response.parsedResponse.result[0],
+        Software: response.parsedResponse.software[0],
+        transactionId: response.parsedResponse.transactionId[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }
