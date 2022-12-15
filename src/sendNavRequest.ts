@@ -36,7 +36,8 @@ export default async function sendNavRequest<R>(
     );
 
     var responseXml = response.data;
-    parsedResponse = await readFromXml(responseXml);
+
+    parsedResponse = await readFromXml<R>(responseXml);
   } catch (e: any) {
     console.log(e.response.data);
   }

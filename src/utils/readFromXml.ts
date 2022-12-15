@@ -7,12 +7,12 @@ import xml2js from 'xml2js';
  * @param explicitArray értékeket tömbben adja-e vissza
  * @returns js object.
  */
-export default async function readFromXml(
+export default async function readFromXml<R>(
   xml: string,
   explicitRoot: boolean = false,
-  explicitArray: boolean = false,
+  explicitArray: boolean = true,
   removeNamespaces: boolean = true
-) {
+): Promise<R> {
   const stripPrefix = xml2js.processors.stripPrefix;
   const parser = new xml2js.Parser({
     explicitRoot: explicitRoot,
