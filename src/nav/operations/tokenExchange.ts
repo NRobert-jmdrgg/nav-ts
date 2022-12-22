@@ -10,6 +10,7 @@ import writeToXML from '../utils/writeToXML';
  * A számlaadat-szolgáltatás beküldését megelőző egyszer használatos adatszolgáltatási token kiadását végző operáció.
  * @param user Technikai felhasználó adatai
  * @param software software adatok
+ * @param returnWithXml Ha igaz, akkor a request és response xml-t is visszaadja.
  * @returns exchange token
  */
 export default async function getExchangeToken(

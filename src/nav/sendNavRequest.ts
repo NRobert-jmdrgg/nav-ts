@@ -14,6 +14,7 @@ type Response<R> = {
  *  Kérés küldése a nav felé.
  * @param request
  * @param operation api endpoint neve
+ * @param returnWithXml ha igaz visszatér xml-el
  * @template R visszatérési érték típus
  * @returns Promise<R | null> válasz object
  *
