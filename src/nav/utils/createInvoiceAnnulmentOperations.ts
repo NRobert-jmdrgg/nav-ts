@@ -7,21 +7,21 @@ type invoiceAnnulmentProps = {
   index: number;
   invoiceAnnulment: invoiceAnnulment;
 };
-
+/**
+ * ManageInvoiceAnnulement options segédfüggvény
+ * @param props indexek és invoiceAnnulment adatokat tartalmazó tömb
+ * @returns annulementOperation tömb
+ */
 export default function createInvoiceAnnulmentOperations(
   props: invoiceAnnulmentProps[]
 ): annulmentOperation[] {
-  let annulmentArray: annulmentOperation[] = [];
-  props.forEach((p) => {
-    const xml = writeToXML(p.invoiceAnnulment);
-    console.log(xml);
+  return props.map((p) => {
+    const xml = writeToXML(p.invoiceAnnulment, 'InvoiceAnnulment');
     const base64string = utf8ToBase64(xml);
-    annulmentArray.push({
+    return {
       index: p.index,
       annulmentOperation: 'ANNUL',
       invoiceAnnulment: base64string,
-    });
+    };
   });
-
-  return annulmentArray;
 }
