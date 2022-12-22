@@ -16,6 +16,7 @@ import writeToXML from '../utils/writeToXML';
  * @param user technikai felhasználó adatok
  * @param software software adatok
  * @param options konfigurációs object
+ * @param returnWithXml Ha igaz, akkor a request és response xml-t is visszaadja.
  * @returns transactionId és result érték
  */
 export default async function manageAnnulment(
