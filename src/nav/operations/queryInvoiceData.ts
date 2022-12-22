@@ -53,12 +53,12 @@ export default async function queryInvoiceData(
     returnWithXml
   );
 
-  return response.parsedResponse
+  return response.data
     ? {
-        header: response.parsedResponse.header[0],
-        result: response.parsedResponse.result[0],
-        Software: response.parsedResponse.software[0],
-        invoiceDataResult: response.parsedResponse.invoiceDataResult?.[0],
+        header: response.data.header[0],
+        result: response.data.result[0],
+        Software: response.data.software[0],
+        invoiceDataResult: response.data.invoiceDataResult?.[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

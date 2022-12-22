@@ -35,7 +35,7 @@ export default async function getExchangeToken(
     returnWithXml
   );
 
-  const encryptedToken = response.parsedResponse?.encodedExchangeToken[0];
+  const encryptedToken = response.data?.encodedExchangeToken[0];
 
   // dekódolás
   // iv nem kell
@@ -48,11 +48,11 @@ export default async function getExchangeToken(
     exchangeToken += decipher.final('utf8');
   }
 
-  return response.parsedResponse
+  return response.data
     ? {
-        header: response.parsedResponse.header[0],
-        result: response.parsedResponse.result[0],
-        Software: response.parsedResponse.software[0],
+        header: response.data.header[0],
+        result: response.data.result[0],
+        Software: response.data.software[0],
         exchangeToken: exchangeToken,
         responseXml: response.responseXml,
         requestXml: response.requestXml,

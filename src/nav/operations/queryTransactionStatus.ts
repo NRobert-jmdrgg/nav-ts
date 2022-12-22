@@ -48,12 +48,12 @@ export default async function queryTransactionStatus(
     returnWithXml
   );
 
-  return response.parsedResponse
+  return response.data
     ? {
-        header: response.parsedResponse.header[0],
-        result: response.parsedResponse.result[0],
-        Software: response.parsedResponse.software[0],
-        processsingResult: response.parsedResponse.processsingResult?.[0],
+        header: response.data.header[0],
+        result: response.data.result[0],
+        Software: response.data.software[0],
+        processsingResult: response.data.processsingResult?.[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

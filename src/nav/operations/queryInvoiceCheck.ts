@@ -53,12 +53,12 @@ export default async function queryInvoiceCheck(
     returnWithXml
   );
 
-  return response.parsedResponse
+  return response.data
     ? {
-        header: response.parsedResponse.header[0],
-        result: response.parsedResponse.result[0],
-        Software: response.parsedResponse.software[0],
-        invoiceCheckResult: response.parsedResponse.invoiceCheckResult[0],
+        header: response.data.header[0],
+        result: response.data.result[0],
+        Software: response.data.software[0],
+        invoiceCheckResult: response.data.invoiceCheckResult[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

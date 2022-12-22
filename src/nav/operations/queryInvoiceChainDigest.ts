@@ -55,13 +55,12 @@ export default async function queryInvoiceChainDigest(
     returnWithXml
   );
 
-  return response.parsedResponse
+  return response.data
     ? {
-        header: response.parsedResponse.header[0],
-        result: response.parsedResponse.result[0],
-        Software: response.parsedResponse.software[0],
-        invoiceChainDigestResult:
-          response.parsedResponse.InvoiceChainDigestResult[0],
+        header: response.data.header[0],
+        result: response.data.result[0],
+        Software: response.data.software[0],
+        invoiceChainDigestResult: response.data.InvoiceChainDigestResult[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

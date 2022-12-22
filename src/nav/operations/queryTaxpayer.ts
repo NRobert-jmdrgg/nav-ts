@@ -43,14 +43,14 @@ export default async function queryTaxpayer(
     returnWithXml
   );
 
-  return response.parsedResponse
+  return response.data
     ? {
-        header: response.parsedResponse.header[0],
-        result: response.parsedResponse.result[0],
-        Software: response.parsedResponse.software[0],
-        infoDate: response.parsedResponse.infoDate?.[0],
-        taxpayerValidity: response.parsedResponse.taxpayerValidity?.[0],
-        taxpayerData: response.parsedResponse.taxpayerData?.[0],
+        header: response.data.header[0],
+        result: response.data.result[0],
+        Software: response.data.software[0],
+        infoDate: response.data.infoDate?.[0],
+        taxpayerValidity: response.data.taxpayerValidity?.[0],
+        taxpayerData: response.data.taxpayerData?.[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }

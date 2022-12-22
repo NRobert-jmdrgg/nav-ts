@@ -61,12 +61,12 @@ export default async function manageAnnulment(
     returnWithXml
   );
 
-  return response.parsedResponse
+  return response.data
     ? {
-        header: response.parsedResponse.header[0],
-        result: response.parsedResponse.result[0],
-        Software: response.parsedResponse.software[0],
-        transactionId: response.parsedResponse.transactionId[0],
+        header: response.data.header[0],
+        result: response.data.result[0],
+        Software: response.data.software[0],
+        transactionId: response.data.transactionId[0],
         responseXml: response.responseXml,
         requestXml: response.requestXml,
       }
