@@ -1,4 +1,4 @@
-type AnnulmentCodeType =
+export type AnnulmentCodeType =
   | 'ERRATIC_DATA'
   | 'ERRATIC_INVOICE_NUMBER'
   | 'ERRATIC_INVOICE_ISSUE_DATE'

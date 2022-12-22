@@ -26,8 +26,8 @@ export default async function manageAnnulment(
   returnWithXml = true
 ) {
   // sorrend
-  options.annulmentOperations.annumentOperation =
-    options.annulmentOperations.annumentOperation.map((ao) =>
+  options.annulmentOperations.annulmentOperation =
+    options.annulmentOperations.annulmentOperation.map((ao) =>
       pick(ao, ['index', 'annulmentOperation', 'invoiceAnnulment'])
     );
 
@@ -46,7 +46,7 @@ export default async function manageAnnulment(
     request['ManageAnnulmentRequest']['common:header']['common:requestId'],
     request['ManageAnnulmentRequest']['common:header']['common:timestamp'],
     user.signatureKey,
-    options.annulmentOperations.annumentOperation.map(
+    options.annulmentOperations.annulmentOperation.map(
       (ao) =>
         <Operation>{
           operationType: ao.annulmentOperation,

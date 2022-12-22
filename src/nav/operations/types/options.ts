@@ -2,14 +2,16 @@
  * Operáció opció típusok
  */
 
+export type annulmentOperation = {
+  index: number; // A technikai érvénytelenítés pozíciója a kérésen belül
+  annulmentOperation: 'ANNUL'; // A kért technikai érvénytelenítési művelet megjelölése
+  invoiceAnnulment: string; // A technikai érvénytelenítés adatai BASE64 kódolásban
+};
+
 export type ManageAnnulmentOptions = {
   exchangeToken: string; // Adatszolgáltatási token (tokenExchange)
   annulmentOperations: {
-    annumentOperation: {
-      index: number; // A technikai érvénytelenítés pozíciója a kérésen belül
-      annulmentOperation: 'ANNUL'; // A kért technikai érvénytelenítési művelet megjelölése
-      invoiceAnnulment: string; // A technikai érvénytelenítés adatai BASE64 kódolásban
-    }[];
+    annulmentOperation: annulmentOperation[];
   };
 };
 
