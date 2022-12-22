@@ -6,7 +6,6 @@ import sendNavRequest from '../sendNavRequest';
 import { QueryInvoiceChainDigestResponse } from './types/response';
 import { pick } from 'lodash';
 import writeToXML from '../utils/writeToXML';
-import { isCallExpression } from 'typescript';
 
 /**
  * Az operáció a megadott keresőfeltételeknek megfelelő, lapozható számlalistát ad vissza a válaszban. A lista elemei a megadott alapszámlához tartozó számlalánc elemei

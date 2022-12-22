@@ -1,6 +1,5 @@
 import axios from 'axios';
-import xml2js from 'xml2js';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import readFromXml from './utils/readFromXml';
 
 dotenv.config();

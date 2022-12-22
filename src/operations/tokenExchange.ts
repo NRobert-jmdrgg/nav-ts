@@ -1,7 +1,7 @@
 import createRequest from '../createRequest.js';
 import sendNavRequest from '../sendNavRequest.js';
 import { createRequestSignature } from '../utils/createRequestSignature';
-import crypto from 'crypto';
+import { createDecipheriv } from 'crypto';
 import { User, Software } from '../baseTypes';
 import { TokenExchangeResponse } from './types/response.js';
 import writeToXML from '../utils/writeToXML';
@@ -38,11 +38,7 @@ export default async function getExchangeToken(
 
   // dekódolás
   // iv nem kell
-  const decipher = crypto.createDecipheriv(
-    'aes-128-ecb',
-    user.exchangeKey,
-    null
-  );
+  const decipher = createDecipheriv('aes-128-ecb', user.exchangeKey, null);
 
   let exchangeToken = '';
   // base64 -> utf8

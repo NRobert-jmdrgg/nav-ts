@@ -7,7 +7,7 @@ import {
 import { createRequestSignature } from '../utils/createRequestSignature';
 import sendNavRequest from '../sendNavRequest';
 import { QueryInvoiceDigestResponse } from './types/response';
-import { pick, toArray } from 'lodash';
+import { pick } from 'lodash';
 import writeToXML from '../utils/writeToXML';
 
 /**

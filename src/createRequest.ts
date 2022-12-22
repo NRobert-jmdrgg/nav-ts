@@ -1,5 +1,5 @@
 import makeid from './utils/makeid';
-import crypto from 'crypto';
+import { createHash } from 'crypto';
 import { pick } from 'lodash';
 import { User, Software } from './baseTypes';
 
@@ -35,8 +35,7 @@ export default function createRequest(
           $: {
             cryptoType: 'SHA-512',
           },
-          _: crypto
-            .createHash('sha512')
+          _: createHash('sha512')
             .update(user.password)
             .digest('hex')
             .toUpperCase(),

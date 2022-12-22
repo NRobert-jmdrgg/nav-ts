@@ -1,4 +1,4 @@
-import xml2js from 'xml2js';
+import { Parser, processors } from 'xml2js';
 
 /**
  * Olvasás XML fájlból
@@ -13,8 +13,8 @@ export default async function readFromXml<R>(
   explicitArray: boolean = true,
   removeNamespaces: boolean = true
 ): Promise<R> {
-  const stripPrefix = xml2js.processors.stripPrefix;
-  const parser = new xml2js.Parser({
+  const stripPrefix = processors.stripPrefix;
+  const parser = new Parser({
     explicitRoot: explicitRoot,
     explicitArray: explicitArray,
     tagNameProcessors: removeNamespaces ? [stripPrefix] : undefined,

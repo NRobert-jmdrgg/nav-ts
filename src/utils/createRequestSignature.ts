@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import { createHash } from 'crypto';
 import formatIsoDate from './formatIsoDate';
 
 /**
@@ -25,7 +25,7 @@ export function createRequestSignature(
 
   if (operations) {
     operations.forEach((operation) => {
-      const hash = crypto.createHash('sha3-512');
+      const hash = createHash('sha3-512');
       partialSignature += hash
         .update(operation.operationType + operation.base64data)
         .digest('hex')
@@ -33,7 +33,7 @@ export function createRequestSignature(
     });
   }
 
-  const hash = crypto.createHash('sha3-512');
+  const hash = createHash('sha3-512');
   const requestSignature = hash
     .update(partialSignature)
     .digest('hex')
