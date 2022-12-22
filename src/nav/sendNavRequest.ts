@@ -39,7 +39,11 @@ export default async function sendNavRequest<R>(
 
     parsedResponse = await readFromXml<R>(responseXml);
   } catch (e: any) {
-    console.log(e.response.data);
+    if (typeof e === 'object') {
+      console.error(JSON.stringify(e, null, 2));
+    } else {
+      console.error(e);
+    }
   }
 
   return {
