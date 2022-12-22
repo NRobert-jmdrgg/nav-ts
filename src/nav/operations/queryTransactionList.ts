@@ -13,6 +13,7 @@ adószámhoz beküldött számlaadat-szolgáltatások listázására szolgál.
  * @param user technikai felhasználó adatok
  * @param software software adatok
  * @param options konfigurációs object
+ * @param returnWithXml Ha igaz, akkor a request és response xml-t is visszaadja.
  * @returns számlaadat lista és result érték
  */
 export default async function queryTransactionList(

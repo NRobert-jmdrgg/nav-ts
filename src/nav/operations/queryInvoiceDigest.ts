@@ -16,6 +16,7 @@ megfelelő, lapozható számla listát ad vissza a válaszban.
  * @param user technikai felhasználó adatok
  * @param software software adatok
  * @param options konfigurációs object
+ * @param returnWithXml Ha igaz, akkor a request és response xml-t is visszaadja.
  * @returns számla lista és result érték
  */
 export default async function queryInvoiceDigest(

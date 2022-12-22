@@ -13,6 +13,7 @@ létezését ellenőrzi a rendszerben, a számla teljes adattartalmának visszaa
  * @param user technikai felhasználó adatok
  * @param software software adatok
  * @param options konfigurációs object
+ * @param returnWithXml Ha igaz, akkor a request és response xml-t is visszaadja.
  * @returns adatszolgáltatás létezik-e és result érték
  */
 export default async function queryInvoiceCheck(

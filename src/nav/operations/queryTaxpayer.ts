@@ -12,6 +12,7 @@ a megadott adószám valódiságáról és érvényességéről a NAV adatbázis
  * @param user technikai felhasználó adatok
  * @param software software adatok
  * @param options konfigurációs object
+ * @param returnWithXml Ha igaz, akkor a request és response xml-t is visszaadja.
  * @returns adószám adatai és result érték
  */
 export default async function queryTaxpayer(
