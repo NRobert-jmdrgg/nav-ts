@@ -1,6 +1,9 @@
 import axios from 'axios';
 import * as dotenv from 'dotenv';
-
+import {
+  GeneralErrorResponse,
+  GeneralExceptionResponse,
+} from './operations/types/error';
 import readFromXml from './utils/readFromXml';
 
 dotenv.config();
@@ -40,7 +43,23 @@ export default async function sendNavRequest<R>(
     const xmlobj = await readFromXml<R>(responseXml);
     data = xmlobj;
   } catch (e: any) {
-    console.log(JSON.stringify(await readFromXml(e.response.data), null, 2));
+    if (e.response.data) {
+      if (e.response.data.includes('GeneralExceptionResponse')) {
+        const xmlobj = await readFromXml<GeneralExceptionResponse>(
+          e.response.data
+        );
+        console.log(JSON.stringify(xmlobj, null, 2));
+      } else if (e.response.data.includes('GeneralErrorResponse')) {
+        const xmlobj = await readFromXml<GeneralErrorResponse>(e.response.data);
+        console.log(JSON.stringify(xmlobj, null, 2));
+      }
+    } else {
+      if (typeof e === 'object') {
+        console.log(JSON.stringify(e, null, 2));
+      } else {
+        console.log(e);
+      }
+    }
   }
 
   return {
