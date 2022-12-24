@@ -24,6 +24,8 @@ export default async function manageInvoice(
   returnWithXml = true
 ) {
   // sorrend
+  options = pick(options, ['exchangeToken', 'invoiceOperations']);
+
   options.invoiceOperations.invoiceOperation =
     options.invoiceOperations.invoiceOperation.map((io) =>
       pick(io, [

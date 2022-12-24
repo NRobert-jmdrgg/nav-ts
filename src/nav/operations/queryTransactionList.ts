@@ -23,6 +23,8 @@ export default async function queryTransactionList(
   returnWithXml = true
 ) {
   // sorrend
+  options = pick(options, ['page', 'insDate', 'requestStatus']);
+
   options.insDate = pick(options.insDate, ['dateTimeFrom', 'dateTimeTo']);
 
   // request létrehozása

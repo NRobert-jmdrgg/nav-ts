@@ -26,6 +26,8 @@ export default async function manageAnnulment(
   returnWithXml = true
 ) {
   // sorrend
+  options = pick(options, ['exchangeToken', 'annulmentOperations']);
+
   options.annulmentOperations.annulmentOperation =
     options.annulmentOperations.annulmentOperation.map((ao) =>
       pick(ao, ['index', 'annulmentOperation', 'invoiceAnnulment'])

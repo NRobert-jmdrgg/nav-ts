@@ -21,6 +21,8 @@ export default async function queryTransactionStatus(
   options: QueryTransactionStatusOptions,
   returnWithXml = true
 ) {
+  options = pick(options, ['transactionId', 'returnOriginalRequest']);
+
   // request létrehozása
   const request = createRequest(
     'QueryTransactionStatusRequest',
