@@ -22,8 +22,6 @@ export default async function queryInvoiceChainDigest(
   returnWithXml = true
 ) {
   // sorrend
-  options = pick(options, ['page', 'invoiceChainQuery']);
-
   options.invoiceChainQuery = pick(options.invoiceChainQuery, [
     'invoiceNumber',
     'invoiceDirection',

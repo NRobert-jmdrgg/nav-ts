@@ -26,8 +26,6 @@ export default async function queryInvoiceDigest(
   returnWithXml = true
 ) {
   // sorrend
-  options = pick(options, ['page', 'invoiceDirection', 'invoiceQueryParams']);
-
   if (options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate) {
     options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate = pick(
       options.invoiceQueryParams.mandatoryQueryParams.invoiceIssueDate,
