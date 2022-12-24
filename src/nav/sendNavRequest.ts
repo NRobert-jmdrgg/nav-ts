@@ -37,7 +37,7 @@ export default async function sendNavRequest<R>(
     const response = await axios.post(
       `${process.env.API_TEST_URL}${process.env.VERSION}${operation}`,
       requestXml,
-      { headers: { 'Content-Type': 'application/xml' } }
+      { headers: { 'Content-Type': 'application/xml' }, timeout: 70 * 1000 }
     );
     responseXml = response.data;
     const xmlobj = await readFromXml<R>(responseXml);
