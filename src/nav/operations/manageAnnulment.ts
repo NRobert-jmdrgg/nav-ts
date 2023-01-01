@@ -10,6 +10,9 @@ import sendNavRequest from '../sendNavRequest';
 import { ManageAnnulmentResponse } from './types/response';
 import { pick } from 'lodash';
 import writeToXML from '../utils/writeToXML';
+import { invoiceAnnulment } from '../operations/types/invoiceAnnulment';
+import { annulmentOperation } from '../operations/types/options';
+import { utf8ToBase64 } from '../utils/base64';
 
 /**
  * Operáció a technikai érvénytelenítések beküldésére szolgáló operáció
@@ -19,7 +22,7 @@ import writeToXML from '../utils/writeToXML';
  * @param returnWithXml Ha igaz, akkor a request és response xml-t is visszaadja.
  * @returns transactionId és result érték
  */
-export default async function manageAnnulment(
+export async function manageAnnulment(
   user: User,
   software: Software,
   options: ManageAnnulmentOptions,
@@ -71,4 +74,28 @@ export default async function manageAnnulment(
         requestXml: response.requestXml,
       }
     : null;
+}
+
+export type invoiceAnnulmentProps = {
+  index: number;
+  invoiceAnnulment: invoiceAnnulment;
+};
+
+/**
+ * ManageInvoiceAnnulement options segédfüggvény
+ * @param props indexek és invoiceAnnulment adatokat tartalmazó tömb
+ * @returns annulementOperation tömb
+ */
+export function createInvoiceAnnulmentOperations(
+  props: invoiceAnnulmentProps[]
+): annulmentOperation[] {
+  return props.map((p) => {
+    const xml = writeToXML(p.invoiceAnnulment, 'InvoiceAnnulment');
+    const base64string = utf8ToBase64(xml);
+    return {
+      index: p.index,
+      annulmentOperation: 'ANNUL',
+      invoiceAnnulment: base64string,
+    };
+  });
 }
