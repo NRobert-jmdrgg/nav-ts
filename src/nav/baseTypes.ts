@@ -10,12 +10,12 @@ export type User = {
   signatureKey: string;
 };
 
-type SoftwareOperationType = 'LOCAL_SOFTWARE' | 'ONLINE_SERVICE';
+// type SoftwareOperationType = 'LOCAL_SOFTWARE' | 'ONLINE_SERVICE';
 
 export type Software = {
   softwareId: string; // A számlázó program azonosítója
   softwareName: string; // A számlázó program neve
-  softwareOperation: SoftwareOperationType; // A számlázó program működési típusa
+  softwareOperation: string; // A számlázó program működési típusa
   softwareMainVersion: string; // A számlázó program fő verziója
   softwareDevName: string; // A számlázó program fejlesztőjének neve;
   softwareDevContact: string; // A számlázó program fejlesztőjének működő email címe
@@ -26,7 +26,7 @@ export type Software = {
 export type resSoftware = {
   softwareId: [string]; // A számlázó program azonosítója
   softwareName: [string]; // A számlázó program neve
-  softwareOperation: [SoftwareOperationType]; // A számlázó program működési típusa
+  softwareOperation: [string]; // A számlázó program működési típusa
   softwareMainVersion: [string]; // A számlázó program fő verziója
   softwareDevName: [string]; // A számlázó program fejlesztőjének neve;
   softwareDevContact: [string]; // A számlázó program fejlesztőjének működő email címe
