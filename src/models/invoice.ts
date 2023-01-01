@@ -18,11 +18,11 @@ const invoiceSchema: Schema = new Schema({
   invoiceIssueDate: Date, // Számla vagy módosító okirat kiállítási dátuma
   supplier: {
     type: Schema.Types.ObjectId,
-    ref: 'Supplier',
+    ref: 'Partner',
   },
   customer: {
     type: Schema.Types.ObjectId,
-    ref: 'Customer',
+    ref: 'Partner',
   },
   paymentMethod: String, // Fizetési mód
   paymentDate: Date, // Fizetési határidő

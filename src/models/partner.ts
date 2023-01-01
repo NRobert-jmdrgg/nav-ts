@@ -1,17 +1,16 @@
 import { Schema, model } from 'mongoose';
 
-const customerSchema: Schema = new Schema({
-  customerTaxNumber: {
+const partnerSchema: Schema = new Schema({
+  taxNumber: {
     taxpayerId: String,
     vatCode: String,
     countryCode: String,
-    customerGroupMemberTaxNumber: String,
+    groupMemberTaxNumber: String,
   },
-  customerName: String,
-  customerCompanyCodes: [String],
-  glnNumbersCustomer: [String],
-  customerVatStatus: String,
-  customerAddress: {
+  Name: String,
+  companyCodes: [String],
+  glnNumbers: [String],
+  address: {
     countryCode: String,
     region: String,
     postalCode: String,
@@ -26,7 +25,7 @@ const customerSchema: Schema = new Schema({
     door: String,
     lotNumber: String,
   },
-  customerBankAccountNumber: String,
+  bankAccountNumber: String,
 });
 
-export default model('Customer', customerSchema);
+export default model('Partner', partnerSchema);
