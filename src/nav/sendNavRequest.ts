@@ -28,8 +28,6 @@ export default async function sendNavRequest<R>(
   operation: string,
   returnWithXml?: boolean
 ): Promise<Response<R>> {
-  // kérés object xml-be írása
-
   // request küldés
   let data;
   let responseXml;
