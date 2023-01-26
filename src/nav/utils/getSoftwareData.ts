@@ -1,5 +1,9 @@
 import { Software } from '../baseTypes';
 
+/**
+ * Software adatok a .env fileból
+ * @returns Software adatok
+ */
 export default function getSoftwareData(): Software {
   return {
     softwareId: process.env.SOFTWARE_ID ?? '',
